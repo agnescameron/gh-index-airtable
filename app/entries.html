@@ -16,7 +16,6 @@ layout: list
 			{% endif %}
 		</div>
 	<div class="itemCard"><b>{{ entry.title }}</b><br>
-	{{ entry.associated_platform }}<br>
 	{{ entry.description | strip_html | truncate: 250 }}</div></li>
 {% endfor %}
 </ul>
