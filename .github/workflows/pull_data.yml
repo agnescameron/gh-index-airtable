@@ -4,7 +4,7 @@ on:
   schedule:
   - cron: "0 0 29 2 1" # this won't run till 2044, change it when you're ready
 
-  # uncomment this one for debugging (will run each time you push a change)
+  ## uncomment this one for debugging (will run each time you push a change)
   # push:
   #   branches:
   #     - main
@@ -59,7 +59,10 @@ jobs:
           while IFS= read -r file
           do
             echo "$file"
-            if [[ $file == "$FILES_DIR/*" ]] ||  [[ $file == "$ARCHIVE_DIR/*" ]] || [[ $file == "app/assets/thumbnails/*" ]]; then
+            if [[ $file == "$FILES_DIR/*.csv" ]] || [[ $file == "$FILES_DIR/" ]] || \
+             [[ $file == "$ARCHIVE_DIR/*.md" ]] ||  [[ $file == "$ARCHIVE_DIR/" ]] || \
+             [[ $file == "app/assets/thumbnails/" ]] || \
+             [[ $file == "app/assets/thumbnails/*.png" ]]; then
               echo "updated files"
               echo "::set-output name=commit_files::true"
             fi

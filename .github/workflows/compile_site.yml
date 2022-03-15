@@ -8,8 +8,11 @@ on:
       - main
 
 env:
-  remote: 'agnescameron/gh-index-airtable' # change this to your repo
-  # need to read in as string; GA doesn't support array assignment
+  # to edit
+  remote: # change this to your repo
+
+  # these can stay the same -- you can add multiple different folders for
+  # md input if you like, separate by semicolon
   INPUT_FOLDERS: "entries;"
   branch: main
 jobs:
@@ -24,19 +27,18 @@ jobs:
           ssh-key: "${{ secrets.COMMIT_KEY }}"
 
 
-      - name: Copy files to site and add layout
+      - name: Copy files to site and add layout to frontmatter
         run: |
             IFS=';' read -ra input_array <<< "${{ env.INPUT_FOLDERS }}"
-            for dir in "${input_array[@]}"; do
-            if ![[ -d "app/index/" ]]
-            then
+            if [ ! -d "app/index/" ]; then
+                echo "could not find entries dir"
                 mkdir app/index/
-                mkdir app/index/_${dir}/
             fi
-            if ![[ -d "app/index/_${dir}" ]]
-            then
-                mkdir app/index/_${dir}/
-            fi
+            for dir in "${input_array[@]}"; do
+              if [ ! -d "app/index/_${dir}" ]; then
+                  echo "could not find entries dir"
+                  mkdir app/index/_${dir}/
+              fi
               cp -r ${dir}/* app/index/_${dir}/
               for file in app/index/_${dir}/*.md; do
                 sed -i '2s/^/layout\: default\n/;' $file
@@ -49,7 +51,7 @@ jobs:
             git pull
             git config user.name github-actions
             git config user.email github-actions@github.com
-            git add app/**.md
+            git add app/**
             git commit -m "compiled site after edit to markdown files"
             git push
 
