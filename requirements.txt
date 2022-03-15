@@ -1,0 +1,4 @@
+pandas
+pyairtable
+Pillow
+python-frontmatter

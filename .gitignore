@@ -1,0 +1,10 @@
+__pycache__/
+.env
+.rbenv-env
+*.pyc
+**/*.pyc
+.DS_Store
+**/.DS_Store
+node_modules/
+package-lock.json
+keys/

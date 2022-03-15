@@ -1,0 +1,23 @@
+title: Philanthrobotics Dataset Index
+description: >- # this means to ignore newlines until "baseurl:"
+  Philanthrobotics is a new collaboration between MIT Open Learning, 
+  MIT Solve, the Knowledge Futures Group, and Lever for Change around 
+  the planning, data collection, data structuring, model creation, 
+  application development, and publishing required to build these 
+  quantitative tools to support philanthropic ventures.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+
+# Build settings
+plugins:
+  - jekyll-feed
+
+collections_dir: index
+emptyArray: []
+
+collections:
+  entries:
+    output: true
+
+include:
+  - _redirects

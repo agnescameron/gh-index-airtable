@@ -1,0 +1,68 @@
+name: pull_data
+
+on:
+  # schedule:
+  # - cron: "* * * * *"
+
+env:
+  JOB_DESC: "Pulling regular updates from the Grants Commons Airtable"
+  BASE_ID: 'app7sFRPnVbNg1Xoo'
+  TABLE_NAME: 'Grant Datasets'
+  TABLE_ID: 'tblAFLVxmOjydBGYg'
+  ARCHIVE_DIR: 'index_archive' # where the csv files should go
+  FILES_DIR: 'entries' # where the markdown files should go
+  remote: 'agnescameron/gh-index-airtable' # change this to your repo
+  branch: main
+jobs:
+  pull_sheet:
+    runs-on: ubuntu-latest
+    name: Pulling regular updates from the Grants Commons Airtable
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+        with:
+          ssh-key: "${{ secrets.COMMIT_KEY }}"
+
+      - name: Install Python 3
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.6
+
+      - name: set up Python environment
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r requirements.txt
+
+      - name: Pull Airtable data and generate markdown
+        id: 'sheet_to_csv'
+        env:
+          INPUT_CREDS: ${{ secrets.AIRTABLE_API_KEY }}
+        run: python3 scripts/pull_data.py
+
+      - name: Check if files changed
+        id: check_diff
+        run: |
+          echo "list changed files:"
+          git diff --name-only
+          
+          echo "check paths of new and changed files:"
+          git diff --name-only > files.txt
+          git status --porcelain | grep -e '^??' | sed -e 's/^?? //g' >> files.txt
+          while IFS= read -r file
+          do
+            echo "$file"
+            if [[ $file == *.csv ]] || [[ $file == *.md ]]; then
+              echo "updated files"
+              echo "::set-output name=commit_files::true"
+            fi
+          done < files.txt
+
+      - name: Commit files
+        if: steps.check_diff.outputs.commit_files == 'true'
+        run: |
+            git pull
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git add "$ARCHIVE_DIR" "$FILES_DIR" app/assets/thumbnails
+            git commit -m "generated files based on airtable"
+            git push

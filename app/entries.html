@@ -1,0 +1,22 @@
+---
+title: Curated grant datasets
+layout: list
+---
+
+<p>This is a list of grant datasets</p>
+
+<ul class=indexList>
+{% for entry in site.entries %}
+	<li onclick="location.href='{{ entry.url }}';">
+		<div class="itemThumb">
+			{% if entry.thumbnail_url %}
+				<img src="{{ entry.thumbnail_url }}"/>
+			{% elsif entry.uuid %}
+				<img src="/assets/thumbnails/{{ entry.uuid }}.png"/>
+			{% endif %}
+		</div>
+	<div class="itemCard"><b>{{ entry.title }}</b><br>
+	{{ entry.associated_platform }}<br>
+	{{ entry.description | strip_html | truncate: 250 }}</div></li>
+{% endfor %}
+</ul>
