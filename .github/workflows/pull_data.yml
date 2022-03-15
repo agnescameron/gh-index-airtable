@@ -11,9 +11,9 @@ on:
 
 env:
   # edit these:
-  INPUT_CREDS: #airtable API key
-  BASE_ID: #id of airtable base
-  TABLE_ID: #id of airtable table
+  INPUT_CREDS: #airtable API key, begins with 'key'
+  BASE_ID: #id of airtable base, begins with 'app'
+  TABLE_ID: #id of airtable table, begins with 'tbl'
   TABLE_NAME: #whatever you want your CSV file to be called
   remote: # change this to your repo
 
@@ -59,7 +59,7 @@ jobs:
           while IFS= read -r file
           do
             echo "$file"
-            if [[ $file == *.csv ]] || [[ $file == *.md ]]; then
+            if [[ $file == "$FILES_DIR/*" ]] ||  [[ $file == "$ARCHIVE_DIR/*" ]] || [[ $file == "app/assets/thumbnails/*" ]]; then
               echo "updated files"
               echo "::set-output name=commit_files::true"
             fi
