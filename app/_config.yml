@@ -21,3 +21,7 @@ collections:
 
 include:
   - _redirects
+
+# variables
+edit_url: # edit url goes here
+displayed_fields: "terms_of_use, description, last_edit" # displayed fields go here (title, location, tags)

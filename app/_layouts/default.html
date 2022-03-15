@@ -4,7 +4,7 @@
 	<body>
 		<div class="pageContainer">
 		{% include header.html %}
-				{% include edit-nav.html %}
+				{% include nav.html %}
 				<div  class="pageTitle"> 
 					<div>
 						{% if page.thumbnail_url %}
@@ -32,7 +32,7 @@
 							{% if page.path contains 'collections' %}
 								<a id="editIcon"><img src="/assets/edit.png"></a>
 							{% else %}
-								<a href="https://docs.google.com/spreadsheets/d/1LQKMaOQlC_flskr2-9Src7RFtMRPrICCk20qYX8X2OY/edit#gid=1389884911"><img src="/assets/edit.png"></a>
+								<a href='{{ site.edit_url }}'><img src="/assets/edit.png"></a>
 							{% endif %}
 						</div>
 						{% if page.location and page.location != '' %}
@@ -73,7 +73,7 @@
 							</p>
 						{% endif %}
 
-						{% assign DISPLAY_FIELDS = "terms_of_use, associated_platform, point_of_contact, cost_to_access, description, number_of_records, country, last_edit" | split: ', ' %}
+						{% assign DISPLAY_FIELDS = site.displayed_fields | split: ', ' %}
 
 						{% for field in page %}
 							{% if DISPLAY_FIELDS contains field %}
