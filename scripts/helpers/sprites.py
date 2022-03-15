@@ -2,6 +2,7 @@
 import random
 import sys
 from PIL import (Image, ImageDraw)
+import os
 
 r = lambda: random.randint(50,215)
 rc = lambda: (r(), r(), r())
@@ -46,6 +47,13 @@ def create_sprites(uuids):
 	topLeftY = padding/2
 	botRightX = topLeftX + imgSize - padding
 	botRightY = topLeftY + imgSize - padding
+
+	try:
+		os.mkdir('app/assets/thumbnails/')
+	except FileExistsError:
+		print('found thumbnail dir')
+	except:
+		print('something went wrong')
 
 	for uuid in uuids:
 		origImage = Image.new('RGB', (origDimension, origDimension), (255, 255, 255))  
