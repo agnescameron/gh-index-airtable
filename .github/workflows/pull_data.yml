@@ -2,21 +2,29 @@ name: pull_data
 
 on:
   schedule:
-  - cron: "0 0 29 2 1" # this won't run for several years
+  - cron: "0 0 29 2 1" # this won't run till 2044, change it when you're ready
+
+  # uncomment this one for debugging (will run each time you push a change)
+  # push:
+  #   branches:
+  #     - main
 
 env:
-  JOB_DESC: "Pulling regular updates from the Grants Commons Airtable"
-  BASE_ID: 'app7sFRPnVbNg1Xoo'
-  TABLE_NAME: 'Grant Datasets'
-  TABLE_ID: 'tblAFLVxmOjydBGYg'
-  ARCHIVE_DIR: 'index_archive' # where the csv files should go
-  FILES_DIR: 'entries' # where the markdown files should go
-  remote: 'agnescameron/gh-index-airtable' # change this to your repo
+  # edit these:
+  INPUT_CREDS: #airtable API key
+  BASE_ID: #id of airtable base
+  TABLE_ID: #id of airtable table
+  TABLE_NAME: #whatever you want your CSV file to be called
+  remote: # change this to your repo
+
+  # these guys can stay as default unless you want to change:
+  ARCHIVE_DIR: "index_archive" #this is the default home for csv files
+  FILES_DIR: "entries" #this is the default home for markdown files
   branch: main
 jobs:
   pull_sheet:
     runs-on: ubuntu-latest
-    name: Pulling regular updates from the Grants Commons Airtable
+    name: Pulling regular updates from Airtable
     steps:
       - name: checkout repository
         uses: actions/checkout@v2

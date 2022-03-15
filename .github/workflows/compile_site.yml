@@ -8,7 +8,7 @@ on:
       - main
 
 env:
-  remote: 'agnescameron/gh-index-airtable'
+  remote: 'agnescameron/gh-index-airtable' # change this to your repo
   # need to read in as string; GA doesn't support array assignment
   INPUT_FOLDERS: "entries;"
   branch: main

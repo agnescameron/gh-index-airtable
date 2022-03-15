@@ -4,15 +4,7 @@ This indexing tool is built entirely using open infrastructure (Github Actions, 
 
 ## 1. Setting up Github repository
 
-First, clone this repository locally:
-
-`$ git clone `
-
-Next, you will want to make this repository link to a repository *you personally* control, e.g. unlink it from this one. The quickest way to do this is to navigate to this directory, and run:
-
-`$ rm -rf .git`
-
-to remove the original git metadata. Next, go through the steps of re-initialising this as a git repository, and then link it to one you have made on Github (can be public or private).
+This part used to be longer, but Github have added a great feature called 'Template Repositories' -> to start out using this as a template, click the green 'Template Repository' button in the top right. It will create a new repository belonging to you (importantly *not* a fork -- you don't want to fork this if you are making your own version), which will contain a copy of these files. Then, clone your version locally.
 
 ## 2. Setting up Airtable
 
@@ -42,11 +34,11 @@ INPUT_CREDS= #airtable API key
 BASE_ID= #id of airtable base
 TABLE_ID= #id of airtable table
 TABLE_NAME= #whatever you want your CSV file to be called
-ARCHIVE_DIR="index_archive" #this is the default home for csv files, change if you like
-FILES_DIR="entries" #this is the default home for markdown files, change if you like
+ARCHIVE_DIR="index_archive" #this is the default home for csv files
+FILES_DIR="entries" #this is the default home for markdown files
 ```
 
-### 2.3 Test out authentication
+### 2.3 Test out system
 
 At this point, with the information from your .env file, the scripts should all be able to run. Run `$ source .env` to add the variables to the environment (I've actually had trouble getting this to work on a new mac -- instead I individually ran `$ export INPUT_CREDS='somekey123'` for each line in the file instead, and that worked fine). Next, from the top level directory, run:
 
@@ -71,10 +63,82 @@ I tend to generate a new .ssh key for this instead of using my existing one (tha
 
 I copy the entire public part of the key into a new ['deploy key'](https://docs.github.com/en/developers/overview/managing-deploy-keys#deploy-keys) attached to the repository, called COMMIT_KEY, and select 'Allow Write Access'. I then repeat the [secret adding](https://docs.github.com/en/actions/security-guides/encrypted-secrets) process from before, but with the private key, creating a new secret that's *also* called COMMIT_KEY. Make sure to copy the entire text of the key, including the bits that say `begin/end OPENSSL private key`.
 
-
 ## 4. Setting up actions
 
+Now all the secrets are in the git repository, the last big infrastructural piece is to get actions running. You will need to change both `pull_data.yml` and `compile_site.yml` in the folder `.github/workflows`
 
-## 5. Setting up a site
+Editing `pull_data.yml` -- add in environment variables, and also make the cron job run every couple of minutes (technically this is every min but github actions don't actually run that reliably often). Optionally (but recommended for this part) you can also set the action to run on push, which is helpful for debugging. There's no limit to the number of trigger events you can have at once:
 
-site-logo.png
+```
+on:
+	schedule:
+	- cron: "0 0 29 2 1" # this won't run till 2044, change it to "* * * * *" when you're ready
+
+	# uncomment this one for debugging (will run each time you push a change)
+	# push:
+	#   branches:
+	#     - main
+
+env:
+	# edit these:
+	INPUT_CREDS: #airtable API key
+	BASE_ID: #id of airtable base
+	TABLE_ID: #id of airtable table
+	TABLE_NAME: #whatever you want your CSV file to be called
+	remote: # change this to your repo
+
+	# these guys can stay as default unless you want to change:
+	ARCHIVE_DIR: "index_archive" #this is the default home for csv files
+	FILES_DIR: "entries" #this is the default home for markdown files
+	branch: main
+```
+
+Editing `compile_site.yml` -- just need to add the remote repository:
+
+```
+env:
+  remote: 'agnescameron/gh-index-airtable' # change this to your repo
+
+  # can leave these as default. if adding more input folders separate w/ semicolons, no arrays in actions
+  INPUT_FOLDERS: "entries;"
+  branch: main
+```
+
+(if you wanted to you could also just add all of these as secrets to make them environment variables -- this will work fine but makes it less obvious how everything is working -- it's up to you)
+
+### 4.1 Testing the Github actions
+
+Once you've pushed your changes, take a look at the 'actions' tab in your Github repository, and you should see the `pull_data` workflow running. In an ideal world, this would work first time -- but if it doesn't, take a look at the logs -- often small config errors can cause an action to trip up.
+
+## 5. Configuring the website
+
+Once you have the actions running, the last step is to configure the website. This last step is more flexible, and involves some messing around with Jekyll. All of the site lives in the folder `app` (the scripts in `compile_site.yml` are what sets up all the markdown files there).
+
+The core parts to change are in `app/config.yml`:
+
+```
+# variables
+edit_url: # edit url goes here (e.g. to git or to airtable)
+displayed_fields: "terms_of_use, description, last_edit" # displayed fields go here (leave out title, location, tags -- )
+```
+
+The list of displayed fields is all the fields that don't have a default display setting (like title and location). Add as many of the fields in your database as you'd like shown on info pages -- only when there's a value will they actually appear on the page.
+
+If you'd like to edit the appearence, make changes in `_sass/layout.scss`. Editing the text of the site can be done in `index.html`, `about.md`, `entries.md`, and it's also possible to add more pages.
+
+To run locally, you will need Ruby, bundler and jekyll installed, then use the commands:
+
+```
+$ bundle install
+$ bundle exec jekyll serve
+```
+
+### 5.1 Setting up Netlify
+
+Once you have a site you're happy with, the last step is to set up hosting. I use Netlify, but you can also use another JAMstack hosting platform like Vercel (last time I checked Github Pages had some limitations on what you could do with Jekyll so I avoid it, but they might have improved it by now too).
+
+Pretty much the only thing you need to do is set up build settings, and change the domain if you like.
+
+
+
+nice.
