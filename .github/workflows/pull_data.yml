@@ -1,6 +1,6 @@
 name: pull_data
 
-on:
+# on:
   # schedule:
   # - cron: "* * * * *"
 
