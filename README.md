@@ -1,6 +1,6 @@
 # How to use this tool
 
-This indexing tool is built entirely using open infrastructure (Github Actions, Google Sheets/Airtable), and as such is forkable and usable by anyone with a similar project. This process of forking is something we are actively working to streamline; if you have any issues adapting this code to your use case, please let us know via Github Issues and we can help out. This copy of the code is for Airtable, which is a much easier setup than google sheets
+This indexing tool is built entirely using open infrastructure (Github Actions, Google Sheets/Airtable), and as such is forkable and usable by anyone with a similar project. This process of forking is something we are actively working to streamline; if you have any issues adapting this code to your use case, please let us know via Github Issues and we can help out. This copy of the code is for Airtable, which is a much easier setup than google sheets. These instructions are a bit long and we are always looking to cut stuff out, but you do get a whole site at the end of it.
 
 ## 1. Setting up Github repository
 
@@ -139,6 +139,6 @@ Once you have a site you're happy with, the last step is to set up hosting. I us
 
 Pretty much the only thing you need to do is set up build settings, and change the domain if you like.
 
-
+<img width="701" alt="Screenshot 2022-03-15 at 11 39 34" src="https://user-images.githubusercontent.com/16444898/158360297-82e34fa3-2fea-4c27-af73-148d6a065f82.png">
 
 nice.
