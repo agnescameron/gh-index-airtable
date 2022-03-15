@@ -1,8 +1,8 @@
 name: pull_data
 
-# on:
-  # schedule:
-  # - cron: "* * * * *"
+on:
+  schedule:
+  - cron: "0 0 5 31 2 ?" # this will never run
 
 env:
   JOB_DESC: "Pulling regular updates from the Grants Commons Airtable"
