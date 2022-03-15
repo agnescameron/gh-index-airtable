@@ -38,7 +38,7 @@ ARCHIVE_DIR="index_archive" #this is the default home for csv files
 FILES_DIR="entries" #this is the default home for markdown files
 ```
 
-### 2.3 Test out system
+### 2.3 Test scripts
 
 At this point, with the information from your .env file, the scripts should all be able to run. Run `$ source .env` to add the variables to the environment (I've actually had trouble getting this to work on a new mac -- instead I individually ran `$ export INPUT_CREDS='somekey123'` for each line in the file instead, and that worked fine). Next, from the top level directory, run:
 
