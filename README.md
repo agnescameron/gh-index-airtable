@@ -126,12 +126,13 @@ The list of displayed fields is all the fields that don't have a default display
 
 If you'd like to edit the appearence, make changes in `_sass/layout.scss`. Editing the text of the site can be done in `index.html`, `about.md`, `entries.md`, and it's also possible to add more pages.
 
-To run locally, you will need Ruby, bundler and jekyll installed, then use the commands:
+To run locally, you will need Ruby, bundler and jekyll installed, then use the following command to serve files locally:
 
 ```
-$ bundle install
 $ bundle exec jekyll serve
 ```
+
+To add a logo to your site, change the image 'site-logo.png' in assets to the logo you would like.
 
 ### 5.1 Setting up Netlify
 
