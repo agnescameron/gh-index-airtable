@@ -1,5 +1,8 @@
 ---
 # Front matter comment to ensure Jekyll properly reads file.
 ---
+
+$background_color: {{ site.background_color }};
+
 @import
 	"layout"
