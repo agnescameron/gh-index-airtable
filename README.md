@@ -27,13 +27,13 @@ If you'd like to have an array field that's not listed here, it's possible to ad
 
 These can be found most easily by going to the [API](https://airtable.com/api) tools section of the airtable site, and selecting the relevant base. Tick 'Show API Key', then scroll down till you find both the table id and the base id. They should all be 16-character alphanumeric strings.
 
-Set up a .env file in the top level of this directory to contain these variables. The .gitignore file should already ignore it (check this before committing though) -- this is just there for testing the scripts locally and keeping track of all your variables. In a minute, we'll also add these to the Github action. The table name doesn't *have* to match the actual name of your table (as the id is used to uniquely id the table), but it's used to name the .csv files that get outputted. It should have the following format (make sure there are no spaces, and wrap all the keys/ids in quotation marks):
+Set up a .env file in the top level of this directory to contain these variables. The .gitignore file should already ignore it (check this before committing though) -- this is just there for testing the scripts locally and keeping track of all your variables. In a minute, we'll also add these to the Github action. The table name doesn't *have* to match the actual name of your table (as the id is used to uniquely id the table), but it's used to name the .csv files that get outputted. It should have the following format (make sure there are no spaces between the equals sign, variables and values, and wrap all the keys/ids in quotation marks):
 
 ```
-INPUT_CREDS= #airtable API key
-BASE_ID= #id of airtable base
-TABLE_ID= #id of airtable table
-TABLE_NAME= #whatever you want your CSV file to be called
+INPUT_CREDS=#airtable API key
+BASE_ID=#id of airtable base
+TABLE_ID=#id of airtable table
+TABLE_NAME=#whatever you want your CSV file to be called
 ARCHIVE_DIR="index_archive" #this is the default home for csv files
 FILES_DIR="entries" #this is the default home for markdown files
 ```
@@ -114,7 +114,7 @@ Once you've pushed your changes, take a look at the 'actions' tab in your Github
 
 Once you have the actions running, the last step is to configure the website. This last step is more flexible, and involves some messing around with Jekyll. All of the site lives in the folder `app` (the scripts in `compile_site.yml` are what sets up all the markdown files there).
 
-The core parts to change are in `app/config.yml`:
+The core parts to change are in `app/_config.yml`:
 
 ```
 # variables
