@@ -80,7 +80,7 @@ def generate_markdown(data, directory):
 		new_files.append(row['uuid'])
 
 		#create title
-		if row['shortname'] and row['shortname'].strip():
+		if "shortname" in row and row['shortname'].strip():
 			filepath = os.path.join(directory + '/', row['shortname'] + '.md')
 		else:
 			shortname = row["title"].lower().replace(' ', '_') + "_" + str(random.randrange(0,50))
